@@ -1,0 +1,25 @@
+# ── Netplan — IP estática por cable Ethernet ──────────────────────────────────
+#
+# Copia este archivo a: /etc/netplan/01-network-manager-all.yaml
+# Ajusta los valores marcados con <...> y luego ejecuta:
+#   sudo netplan apply
+#
+# Para ver el nombre de tu interfaz de red:
+#   ip a
+# ─────────────────────────────────────────────────────────────────────────────
+
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    eth0:                          # <-- Cambia por tu interfaz real (ej: enp3s0)
+      dhcp4: no
+      addresses:
+        - 192.168.1.100/24         # <-- IP fija deseada para el NAS
+      routes:
+        - to: default
+          via: 192.168.1.1         # <-- IP de tu router
+      nameservers:
+        addresses:
+          - 8.8.8.8                # Google DNS primario
+          - 8.8.4.4                # Google DNS secundario

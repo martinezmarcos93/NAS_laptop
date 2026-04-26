@@ -1,0 +1,29 @@
+[Unit]
+Description=NAS — Panel web de administración (Flask)
+Documentation=https://github.com/TU_USUARIO/nas-laptop
+After=network.target smbd.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=nasuser
+Group=nasuser
+WorkingDirectory=/home/nasuser
+
+ExecStart=/usr/bin/python3 /home/nasuser/nas_web.py
+
+# Reinicio automático si el proceso cae
+Restart=on-failure
+RestartSec=10
+
+# Logging (ver con: journalctl -u nasweb -f)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nas-web
+
+# Variables de entorno útiles para Flask
+Environment=FLASK_ENV=production
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

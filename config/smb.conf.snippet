@@ -1,0 +1,27 @@
+# ── Configuración NAS — añadir al final de /etc/samba/smb.conf ───────────────
+#
+# Pega este bloque al final del archivo con:
+#   sudo nano /etc/samba/smb.conf
+#
+# Luego reinicia Samba:
+#   sudo systemctl restart smbd
+# ─────────────────────────────────────────────────────────────────────────────
+
+[AlmacenNAS]
+   comment = Almacenamiento compartido — NAS con laptop reciclada
+   path = /home/nasuser/Compartido
+   browseable = yes
+   read only = no
+   guest ok = yes
+   create mask = 0777
+   directory mask = 0777
+
+# ── Notas de seguridad ────────────────────────────────────────────────────────
+# La opción "guest ok = yes" permite acceso sin contraseña.
+# Es adecuada para redes domésticas privadas.
+#
+# Para proteger el acceso con usuario y contraseña:
+#   1. Cambia "guest ok = yes" a "guest ok = no"
+#   2. Añade: valid users = nasuser
+#   3. Crea la contraseña Samba del usuario:
+#      sudo smbpasswd -a nasuser

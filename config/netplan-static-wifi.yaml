@@ -1,0 +1,31 @@
+# ── Netplan — IP estática por WiFi ───────────────────────────────────────────
+#
+# Copia este archivo a: /etc/netplan/01-network-manager-all.yaml
+# Ajusta los valores marcados con <...> y luego ejecuta:
+#   sudo netplan apply
+#
+# Para ver el nombre de tu interfaz WiFi:
+#   ip a   (busca wlan0, wlp2s0, etc.)
+# ─────────────────────────────────────────────────────────────────────────────
+
+network:
+  version: 2
+  renderer: NetworkManager
+  wifis:
+    wlan0:                         # <-- Cambia por tu interfaz real (ej: wlp2s0)
+      dhcp4: no
+      addresses:
+        - 192.168.1.100/24         # <-- IP fija deseada para el NAS
+      routes:
+        - to: default
+          via: 192.168.1.1         # <-- IP de tu router
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+      access-points:
+        "NombreDeTuRedWiFi":       # <-- Nombre exacto de tu red (SSID)
+          password: "TuContraseña" # <-- Contraseña de tu WiFi
+
+# Nota: Para mayor estabilidad del NAS se recomienda usar cable Ethernet.
+# El WiFi puede sufrir desconexiones que interrumpan las transferencias.

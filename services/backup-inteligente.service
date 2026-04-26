@@ -1,0 +1,31 @@
+[Unit]
+Description=NAS — Servicio de respaldo automático inteligente
+Documentation=https://github.com/TU_USUARIO/nas-laptop
+After=network.target smbd.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=nasuser
+Group=nasuser
+WorkingDirectory=/home/nasuser
+
+# Espera 15 segundos al arrancar para que la red y los montajes CIFS estén listos
+ExecStartPre=/bin/sleep 15
+ExecStart=/usr/bin/python3 /home/nasuser/backup_sync.py
+
+# Reinicio automático si el proceso cae
+Restart=on-failure
+RestartSec=30
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nas-backup
+
+# Límites de recursos (ajustable según hardware)
+# Nice=10 hace que el proceso ceda CPU a otros si el sistema está ocupado
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

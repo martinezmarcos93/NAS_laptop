@@ -1,0 +1,34 @@
+# ── Línea para /etc/fstab — montaje CIFS de la carpeta de tu PC ──────────────
+#
+# Añade esta línea al final de /etc/fstab con:
+#   sudo nano /etc/fstab
+#
+# Luego prueba el montaje con:
+#   sudo mount -a
+#   ls /mnt/pc_backup
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Campos:
+#   //IP_PC/CARPETA_COMPARTIDA  →  Ruta UNC de la carpeta compartida en tu PC
+#   /mnt/pc_backup              →  Punto de montaje en la laptop (debe existir)
+#   cifs                        →  Sistema de archivos
+#   credentials=...             →  Archivo con usuario y contraseña (ver abajo)
+#   iocharset=utf8              →  Soporte de caracteres especiales
+#   uid=1000,gid=1000           →  UID/GID del usuario nasuser (verificar con: id nasuser)
+#   nofail                      →  No falla el arranque si el PC no está encendido
+#   _netdev                     →  Espera a que la red esté lista antes de montar
+#   0 0                         →  No verificar ni hacer dump del sistema de archivos
+# ─────────────────────────────────────────────────────────────────────────────
+
+//192.168.1.50/CarpetaARespaldar  /mnt/pc_backup  cifs  credentials=/etc/cifs-credenciales,iocharset=utf8,uid=1000,gid=1000,nofail,_netdev  0  0
+
+# ── Crear el archivo de credenciales ─────────────────────────────────────────
+# Crea el archivo:
+#   sudo nano /etc/cifs-credenciales
+#
+# Contenido del archivo:
+#   username=TU_USUARIO_WINDOWS
+#   password=TU_CONTRASEÑA
+#
+# Asegura los permisos para que solo root pueda leerlo:
+#   sudo chmod 600 /etc/cifs-credenciales
